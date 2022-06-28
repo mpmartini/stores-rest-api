@@ -1,3 +1,5 @@
+import os 
+
 from flask import Flask
 from flask_restful import Api
 from flask_jwt import JWT
@@ -8,7 +10,8 @@ from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'         # cambiando sqlite por MySQL, Oracle, etc. funcionaría igual con otro tipo de bases de datos.
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'         # cambiando sqlite por MySQL, Oracle, etc. funcionaría igual con otro tipo de bases de datos.
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db') # Si esto corre en Heroku la variable "DATABASE_URL" la cogerá de sus variable. en caso contrario sigo usando "sqlite"   
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False   # para que no consuma recursos al hacer el tracking de todas las modificaciones que se hacen sin salvar
 app.secret_key = 'qqwwee'   
 api = Api(app)
